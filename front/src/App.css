@@ -1,0 +1,168 @@
+body {
+  margin: 0;
+}
+
+.App {
+  margin: 0 auto;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.dydis {
+  width: 530px;
+  margin: 0 auto;
+}
+
+.imgas {
+  width: 100px;
+  height: 100px;
+}
+
+.imgas-big {
+  width: 300px;
+  height: 300px;
+}
+
+.imgas-big img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.imgas img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.dydis-vsm {
+  width: 250px;
+  height: 150px;
+}
+
+.dydis-sm {
+  width: 350px;
+}
+
+.dydis-md {
+  width: 550px;
+  height: 550px;
+}
+
+.answers {
+  width: 400px;
+  flex-wrap: wrap;
+}
+
+.overflow-scroll-height {
+  overflow-y: scroll;
+  height: 500px;
+}
+
+button {
+  width: 150px;
+  height: 50px;
+  padding: 8px 16px;
+  margin: 5px;
+}
+
+.a-style {
+  text-decoration: none;
+  color: black;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.f-wrap {
+  flex-wrap: wrap;
+}
+
+.t-align-center {
+  text-align: center;
+}
+
+.j-btw {
+  justify-content: space-between;
+}
+
+.j-even {
+  justify-content: space-evenly;
+}
+
+.j-center {
+  justify-content: center;
+}
+
+.j-around {
+  justify-content: space-around;
+}
+
+.f-direction {
+  flex-direction: column;
+}
+
+.f-direction-reverse {
+  flex-direction: column-reverse;
+}
+
+.a-items-center {
+  align-items: center;
+}
+
+.borderis {
+  border: 2px solid black;
+}
+
+.p20 {
+  padding: 20px;
+}
+
+.m10 {
+  margin: 10px;
+}
+
+.flex3 {
+  flex: 3;
+}
+
+.flex6 {
+  flex: 6;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.length {
+  width: 700px;
+  height: 240px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.link-style {
+  list-style: none;
+  text-decoration: none;
+  color: black;
+}
+
+.d-inline {
+  display: inline-block;
+}
+
+.a-self-center {
+  align-self: center;
+}
+
+@media screen and (max-width: 1400px){
+
+}
+
+@media screen and (max-width: 700px){
+
+}
