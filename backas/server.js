@@ -1,11 +1,14 @@
 const express = require("express")
-const { v4: uuidv4 } = require('uuid');
+const {v4: uuidv4} = require('uuid');
 const app = express();
 const mongoose = require('mongoose')
 const cors = require("cors")
 const mainRouter = require("./router/mainRouter");
 const userDb = require("./schema/userSchema");
 const postDb = require("./schema/postSchema");
+require("dotenv").config();
+
+const DBkey = process.env.DBKEY;
 
 const {Server} = require("socket.io");
 const {disconnect} = require("mongoose");
@@ -21,7 +24,7 @@ app.use(cors())
 app.use(express.json())
 app.listen(3002, '192.168.0.108');
 
-mongoose.connect("mongodb+srv://drutas76:btR9gYpwV6TZ9HUx@cluster0.j1eynvm.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect(DBkey)
     .then(() => {
         console.log('CONNECT SUCCESS')
     }).catch(e => {
@@ -30,11 +33,15 @@ mongoose.connect("mongodb+srv://drutas76:btR9gYpwV6TZ9HUx@cluster0.j1eynvm.mongo
 
 app.use("/", mainRouter);
 
+let connectedClients = [];
+
 io.on("connection", async (socket) => {
     // if (users.length !== io.engine.clientsCount) users.push({
     //     username: "",
     //     id: socket.id
     // })
+
+    connectedClients[socket.id] = socket;
 
     socket.on("downloadDB", async () => {
         const users = await userDb.find().lean();
@@ -62,9 +69,9 @@ io.on("connection", async (socket) => {
     })
     console.log("socket connected")
 
-    // socket.on("disconnect", () => {
-    //     console.log(socket.id)
-    //     users = users.filter(item => item.id !== socket.id)
-    //     restaurants = restaurants.filter(item => item.id !== socket.id)
-    // })
+    socket.on("disconnect", () => {
+        console.log(socket.id)
+        delete connectedClients[socket.id];
+        console.log(connectedClients)
+    })
 })

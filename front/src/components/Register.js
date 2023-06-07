@@ -1,4 +1,6 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
+import http from "../plugins/http";
+import {useNavigate} from "react-router-dom";
 
 function Register({socket}) {
 
@@ -9,27 +11,29 @@ function Register({socket}) {
         image: useRef()
     }
 
-    const options = () => {
-        return {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({
-                username: inputs.username.current.value,
-                password: inputs.password.current.value,
-                image: inputs.image.current.value
-            })
+    const nav = useNavigate();
+    const [error, setError] = useState("");
+
+    const registerHandle = async () => {
+        if (inputs.username.current.value === "") return setError("Enter username");
+        if (inputs.image.current.value === "") return setError("Add image");
+        if (inputs.password.current.value === "") return setError("Enter password");
+        const user = {
+            username: inputs.username.current.value,
+            password: inputs.password.current.value,
+            image: inputs.image.current.value
         };
-    }
-    const registerHandle = () => {
+
         if ((inputs.password.current.value === inputs.password1.current.value) && inputs.username.current.value !== "") {
-            fetch("http://192.168.0.108:3002/register", options())
-                .then(res => res.json())
-                .then(data => {
-                    socket.emit("downloadDB");
-                    console.log(data);
-                })
+            const res = await http.post("register", user);
+            if (!res.error) {
+                socket.emit("downloadDB");
+                nav("/login");
+            } else {
+                setError(res.message);
+            }
+        } else {
+            setError("Passwords do not match")
         }
     }
 
@@ -40,6 +44,7 @@ function Register({socket}) {
             <input className="m10 p20" type="text" placeholder="Password" ref={inputs.password}/>
             <input className="m10 p20" type="text" placeholder="Repeat password" ref={inputs.password1}/>
             <button className="m10" onClick={registerHandle}>Register</button>
+            {error !== "" ? <h4>{error}</h4> : ""}
         </div>
     );
 }

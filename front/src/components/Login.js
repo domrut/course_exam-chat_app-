@@ -1,6 +1,7 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import http from "../plugins/http";
 import {updateCurrentUser} from "../features/userReducer";
 
 function Login({socket, isLogged}) {
@@ -9,33 +10,29 @@ function Login({socket, isLogged}) {
         username: useRef(),
         password: useRef(),
     }
+
+    const [error, setError] = useState("");
     const nav = useNavigate();
     const dispatch = useDispatch();
-    const options = () => {
-        return {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({
-                username: inputs.username.current.value,
-                password: inputs.password.current.value
-            })
+    const loginHandle = async() => {
+        if (inputs.username.current.value === "") return setError("Enter username");
+        if (inputs.password.current.value === "") return setError("Enter password");
+
+        const user = {
+            username: inputs.username.current.value,
+            password: inputs.password.current.value,
         };
-    }
-    const loginHandle = () => {
-        if (inputs.username.current.value !== "") {
-            fetch("http://192.168.0.108:3002/login", options())
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                    if (data.error) return alert(data.message);
-                    socket.emit("downloadDB");
-                    sessionStorage.setItem("token", data.user);
-                    sessionStorage.setItem("username", data.username);
-                    dispatch(updateCurrentUser(sessionStorage.getItem("username")))
-                    setTimeout(() => {nav("/mainPage")}, 500);
-                })
+
+        const res = await http.post("login", user);
+
+        if (!res.error) {
+            socket.emit("downloadDB");
+            sessionStorage.setItem("token", res.user);
+            sessionStorage.setItem("username",res.username);
+            dispatch(updateCurrentUser(sessionStorage.getItem("username")));
+            setTimeout(() => {nav("/profile")}, 500);
+        } else {
+            setError(res.message);
         }
     }
 
@@ -44,6 +41,7 @@ function Login({socket, isLogged}) {
             <input className="m10 p20" type="text" placeholder="Username" ref={inputs.username}/>
             <input className="m10 p20" type="text" placeholder="Password" ref={inputs.password}/>
             <button className="m10" onClick={loginHandle}>Login</button>
+            {error !== "" ? <h4>{error}</h4> : ""}
         </div>
     );
 }

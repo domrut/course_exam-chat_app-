@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
-const ACCESS_SECRET = "someSiasdhaisundak23598-==-=-!@%!@zxz231";
 const bcrypt = require("bcrypt");
 const userDb = require("../schema/userSchema");
 const postDb = require("../schema/postSchema");
+require("dotenv").config();
+const ACCESS_SECRET = process.env.ACCESS_SECRET;
 
 module.exports = {
     register: async (req, res) => {
@@ -23,25 +24,30 @@ module.exports = {
     login: async (req, res) => {
         const {username, password} = req.body
         const user = await userDb.findOne({username})
-        if(!user) return res.send({error: true, message: "no such user"})
+        if(!user) return res.send({error: true, message: "This user does not exist"})
 
         const samePassword = await bcrypt.compare(password, user.password)
-        if(!samePassword) return res.send({error: true, message: "bad password"})
+        if(!samePassword) return res.send({error: true, message: "Incorrect password"})
         const token = jwt.sign(user.username, ACCESS_SECRET);
         return res.send({error: false, user: token, username: username})
     },
 
-    addPost: async (req, res) => {
-        const {username, image, comments, likes} = req.body;
-        const post = new postDb({
-            username,
-            image,
-            comments,
-            likes
-        });
+    profile: async(req, res) => {
+        const {username} = req.user;
+        const user = await userDb.findOne({username})
+        return res.send({error: false, user: {image: user.image, username: user.username} })
+    },
 
-        await post.save();
-        return res.send({error: false, message: "Post created"})
+    addPost: async (req, res) => {
+        // const {username, image, comments, likes} = req.body;
+        // const post = new postDb({
+        //     username,
+        //     image,
+        //     comments,
+        //     likes
+        // });
+        //
+        // await post.save();
     },
 
     addComment: async (req, res) => {
