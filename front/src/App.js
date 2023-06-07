@@ -1,18 +1,19 @@
-import './App.css';
+import './styles/App.css';
 import {useDispatch, useSelector} from "react-redux";
 import {Link, Route, Routes} from "react-router-dom";
 import {updateUsers, updatePosts} from "./features/userReducer";
 import {io} from "socket.io-client";
 import {useEffect, useRef, useState} from "react";
-import AuthPage from "./pages/authPage";
+import RegisterPage from "./pages/registerPage";
+import LoginPage from "./pages/loginPage";
 import MainPage from "./pages/mainPage";
+import IndexPage from "./pages/indexPage";
 import ProfilePage from "./pages/profilePage";
 
 const socket = io("http://192.168.0.108:4000");
 
 function App() {
 
-    const [auth, setAuth] = useState("");
     const dispatch = useDispatch();
     const store = useSelector(store => store.users);
 
@@ -28,16 +29,16 @@ function App() {
         <div className="App">
             <nav>
                 <ul className="d-flex j-center">
-                    <Link to="/" className="link-style"><button onClick={() => setAuth("login")}>Login</button></Link>
-                    <Link to="/" className="link-style"><button onClick={() => setAuth("register")}>Register</button></Link>
                     {store.currentUser && <Link to={`/profile/${store.currentUser}`}><button>Profile</button></Link>}
-                    {store.currentUser && <Link to="/mainPage"><button>Main Page</button></Link>}
+                    {store.currentUser && <Link to="/users"><button>Main Page</button></Link>}
                 </ul>
             </nav>
             <Routes>
-                <Route path="/" element={<AuthPage socket={socket} auth={auth}/>}/>
-                <Route path="/mainPage/*" element={<MainPage socket={socket} />}/>
-                <Route path="/profile/:username" element={<ProfilePage socket={socket} />}/>
+                <Route path="/" element={<IndexPage/>}/>
+                <Route path="/register" element={<RegisterPage socket={socket} />}/>
+                <Route path="/login" element={<LoginPage socket={socket} />}/>
+                <Route path="/users/*" element={<MainPage socket={socket} />}/>
+                <Route path="/profile" element={<ProfilePage socket={socket} />}/>
             </Routes>
         </div>
     );

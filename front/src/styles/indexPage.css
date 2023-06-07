@@ -1,0 +1,80 @@
+.index-container {
+    background: linear-gradient(to top left, #963b98, #ff986f);
+    height: 100vh;
+    width: 100vw;
+}
+
+.index-header {
+    color: white;
+    font-size: 48px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    letter-spacing: 1px;
+    padding: 5% 10%;
+}
+
+.first-head {
+    margin-bottom: 100px;
+}
+
+.index-links {
+    margin-left: 30%;
+    margin-bottom: 20%;
+    text-align: center;
+}
+
+.button-20 a {
+    text-decoration: none;
+    color: #000;
+    font-size: 24px;
+    display:block;
+    padding: 30px;
+}
+
+.button-20 {
+    appearance: button;
+    background: #fff;
+    border-radius: 1rem;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1rem;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    margin: 0;
+    text-align: center;
+    text-transform: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    width: 270px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    transition: 0.3s;
+}
+
+.button-20:hover {
+    scale: 0.97;
+}
+
+.button-20:focus {
+    scale: 0.97;
+}
+
+.button-20:active {
+    scale: 0.97;
+}
+
+.button-20:active:focus {
+    scale: 0.97;
+}
+
+.button-right {
+    margin-left: 100px;
+    background: linear-gradient(to top right, #963b98, #ff986f);
+}
+
+.button-right a {
+    color: #fff;
+}
