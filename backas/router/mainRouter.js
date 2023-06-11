@@ -7,7 +7,7 @@ const authValidator = require("../validators/authValidator");
 
 router.post("/login", mainController.login);
 router.post("/register", registerValidator, mainController.register);
-router.post("/addPost", mainController.addPost);
+router.post("/update", authValidator,  mainController.updateInfo);
 router.post("/profile", authValidator, mainController.profile);
 router.post("/addComment", postValidator, mainController.addComment);
 router.post("/addLike", postValidator, mainController.addLike);

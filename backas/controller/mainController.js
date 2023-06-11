@@ -38,16 +38,36 @@ module.exports = {
         return res.send({error: false, user: {image: user.image, username: user.username} })
     },
 
-    addPost: async (req, res) => {
-        // const {username, image, comments, likes} = req.body;
-        // const post = new postDb({
-        //     username,
-        //     image,
-        //     comments,
-        //     likes
-        // });
-        //
-        // await post.save();
+    updateInfo: async (req, res) => {
+        const {username, image, password} = req.body;
+        let token = "";
+        if (username !== "") {
+            const isCreated = await userDb.findOne({username});
+            if (isCreated) return res.send({error: true, message: "username already exists"})
+            await userDb.findOneAndUpdate(
+                {_id: req.user.id},
+                {$set: {username: username}},
+                {new: true}
+            )
+            token = jwt.sign(username, ACCESS_SECRET);
+        }
+        if (image !== "") {
+            await userDb.findOneAndUpdate(
+                {_id: req.user.id},
+                {$set: {image: image}},
+                {new: true}
+            )
+        }
+        if (password !== "") {
+            const hash = await bcrypt.hash(password, 3)
+            await userDb.findOneAndUpdate(
+                {_id: req.user.id},
+                {$set: {password: hash}},
+                {new: true}
+            )
+        }
+        const user = await userDb.findOne({_id: req.user.id})
+        return res.send({error: false, user, token, message: "user data updated"})
     },
 
     addComment: async (req, res) => {

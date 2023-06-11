@@ -1,6 +1,6 @@
 import './styles/App.css';
 import {useDispatch, useSelector} from "react-redux";
-import {Link, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import {updateUsers, updatePosts} from "./features/userReducer";
 import {io} from "socket.io-client";
 import {useEffect, useRef, useState} from "react";
@@ -9,6 +9,7 @@ import LoginPage from "./pages/loginPage";
 import MainPage from "./pages/mainPage";
 import IndexPage from "./pages/indexPage";
 import ProfilePage from "./pages/profilePage";
+import Toolbar from "../src/components/Toolbar";
 
 const socket = io("http://192.168.0.108:4000");
 
@@ -27,12 +28,7 @@ function App() {
 
     return (
         <div className="App">
-            <nav>
-                <ul className="d-flex j-center">
-                    {store.currentUser && <Link to={`/profile/${store.currentUser}`}><button>Profile</button></Link>}
-                    {store.currentUser && <Link to="/users"><button>Main Page</button></Link>}
-                </ul>
-            </nav>
+            <Toolbar />
             <Routes>
                 <Route path="/" element={<IndexPage/>}/>
                 <Route path="/register" element={<RegisterPage socket={socket} />}/>

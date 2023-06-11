@@ -9,6 +9,7 @@ body {
 
 * {
   box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
 .dydis {
@@ -39,8 +40,8 @@ body {
 }
 
 .dydis-vsm {
-  width: 250px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
 }
 
 .dydis-sm {
@@ -122,6 +123,10 @@ button {
   padding: 20px;
 }
 
+.p10 {
+  padding: 10px;
+}
+
 .m10 {
   margin: 10px;
 }
@@ -139,10 +144,10 @@ button {
 }
 
 .length {
-  width: 700px;
-  height: 240px;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  width: 200px;
+  height: 800px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .link-style {

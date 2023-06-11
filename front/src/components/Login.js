@@ -28,9 +28,8 @@ function Login({socket, isLogged}) {
         if (!res.error) {
             socket.emit("downloadDB");
             sessionStorage.setItem("token", res.user);
-            sessionStorage.setItem("username",res.username);
             dispatch(updateCurrentUser(sessionStorage.getItem("username")));
-            setTimeout(() => {nav("/profile")}, 500);
+            nav("/profile");
         } else {
             setError(res.message);
         }
