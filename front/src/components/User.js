@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 function User({data}) {
     return (
-        <Link to={`posts/${data.username}`} className="link-style p20 m10 dydis-sm borderis d-flex j-btw f-direction">
+        <Link to={`/users/user/${data.username}`} className="a-items-center link-style p10 m10 dydis-vsm borderis d-flex j-btw f-direction">
             <div className="imgas">
                 <img src={data.image} alt=""/>
             </div>
