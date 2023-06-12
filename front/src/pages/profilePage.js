@@ -46,7 +46,7 @@ function ProfilePage({socket}) {
             inputs.username.current.value = "";
             inputs.image.current.value = "";
             inputs.password.current.value = "";
-            sessionStorage.setItem("token", res.token);
+            if(res.token !== "") sessionStorage.setItem("token", res.token);
         }
     }
 

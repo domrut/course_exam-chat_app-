@@ -49,8 +49,8 @@ body {
 }
 
 .dydis-md {
-  width: 550px;
-  height: 550px;
+  width: 750px;
+  height: 650px;
 }
 
 .answers {
@@ -77,6 +77,14 @@ button {
 
 .d-flex {
   display: flex;
+}
+
+.f-end {
+  justify-content: flex-end;
+}
+
+.f-start {
+  justify-content: flex-start;
 }
 
 .f-wrap {
@@ -123,6 +131,10 @@ button {
   padding: 20px;
 }
 
+.pb-10 {
+  padding-bottom: 10px;
+}
+
 .p10 {
   padding: 10px;
 }
@@ -141,6 +153,10 @@ button {
 
 .flex1 {
   flex: 1;
+}
+
+.w-200 {
+  width: 400px;
 }
 
 .length {

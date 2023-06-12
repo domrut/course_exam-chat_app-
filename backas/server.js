@@ -1,17 +1,15 @@
 const express = require("express")
-const {v4: uuidv4} = require('uuid');
 const app = express();
 const mongoose = require('mongoose')
 const cors = require("cors")
 const mainRouter = require("./router/mainRouter");
 const userDb = require("./schema/userSchema");
-const postDb = require("./schema/postSchema");
+const conversationDb = require("./schema/conversationSchema");
 require("dotenv").config();
 
 const DBkey = process.env.DBKEY;
 
 const {Server} = require("socket.io");
-const {disconnect} = require("mongoose");
 const io = new Server({
     cors: {
         origin: "http://192.168.0.108:3000"
@@ -46,8 +44,8 @@ io.on("connection", async (socket) => {
     socket.on("downloadDB", async () => {
         const users = await userDb.find().lean();
         users.forEach(item => delete item.password)
-        const posts = await postDb.find();
-        if (users && posts) io.emit("init", {posts: posts, users: users});
+        const conversations = await conversationDb.find();
+        if (users && conversations) io.emit("init", {conversations, users});
     })
 
     //send event from back
