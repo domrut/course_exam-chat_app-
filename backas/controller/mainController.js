@@ -1,15 +1,13 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userDb = require("../schema/userSchema");
-const postDb = require("../schema/postSchema");
+const conversationDb = require("../schema/conversationSchema");
 require("dotenv").config();
 const ACCESS_SECRET = process.env.ACCESS_SECRET;
 
 module.exports = {
     register: async (req, res) => {
         const {username, password, image} = req.body
-        console.log(req.body)
-        // HAS PASSWORD
         const hash = await bcrypt.hash(password, 3)
         const user = new userDb({
             username,
@@ -24,18 +22,18 @@ module.exports = {
     login: async (req, res) => {
         const {username, password} = req.body
         const user = await userDb.findOne({username})
-        if(!user) return res.send({error: true, message: "This user does not exist"})
+        if (!user) return res.send({error: true, message: "This user does not exist"})
 
         const samePassword = await bcrypt.compare(password, user.password)
-        if(!samePassword) return res.send({error: true, message: "Incorrect password"})
+        if (!samePassword) return res.send({error: true, message: "Incorrect password"})
         const token = jwt.sign(user.username, ACCESS_SECRET);
         return res.send({error: false, user: token, username: username})
     },
 
-    profile: async(req, res) => {
+    profile: async (req, res) => {
         const {username} = req.user;
         const user = await userDb.findOne({username})
-        return res.send({error: false, user: {image: user.image, username: user.username} })
+        return res.send({error: false, user: {image: user.image, username: user.username}})
     },
 
     updateInfo: async (req, res) => {
@@ -70,15 +68,61 @@ module.exports = {
         return res.send({error: false, user, token, message: "user data updated"})
     },
 
-    addComment: async (req, res) => {
-        const {id, username, comment} = req.body;
-        const post = await postDb.findOneAndUpdate(
+    sendNewMessage: async (req, res) => {
+        const {users, messages} = req.body;
+        let conversations = await conversationDb.find();
+        let flag = false;
+        conversations.map(el => {
+            if ((el.users.filter(item => item === req.user.username).length >= 1)
+                && el.users.filter(item => item === users[0]).length >= 1) {
+                flag = true;
+            }
+        })
+        if (flag) return res.send({error: true, message: "You already have conversation with this person"})
+        users.push(req.user.username);
+        messages[0].sender = req.user.username;
+        const conversation = new conversationDb({
+            users,
+            messages
+        });
+
+        await conversation.save();
+        return res.send({error: false, message: "Message sent", conversation: conversation})
+    },
+
+    getMessages: async (req, res) => {
+        let conversations = await conversationDb.find();
+        let userConvo = [];
+        conversations.map(el => {
+            if (el.users.filter(item => item === req.user.username).length >= 1) {
+                userConvo.push(el);
+            }
+        })
+        return res.send({error: false, conversations: userConvo})
+    },
+
+    getChat: async (req, res) => {
+        let conversation = await conversationDb.findOne({_id: req.body.id});
+        return res.send({error: false, conversation, myUsername: req.user.username})
+    },
+
+    addMessage: async (req, res) => {
+        const {message, id} = req.body;
+        await conversationDb.findOneAndUpdate(
             {_id: id},
-            {$push: {comments: {user: username, comment: comment}}},
+            {$push: {messages: message}},
             {new: true}
         )
+        return res.send({error: false, message: "sent"})
+    },
 
-        res.send({error: false, message: "Comment added", post: post})
+    deleteConversation: async (req, res) => {
+        const {id} = req.body
+        conversationDb.deleteOne(
+            {_id: id},
+        ).then(() => {
+            return res.send({error: false})
+        })
     },
 
     addLike: async (req, res) => {

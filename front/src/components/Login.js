@@ -2,9 +2,8 @@ import React, {useRef, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import http from "../plugins/http";
-import {updateCurrentUser} from "../features/userReducer";
 
-function Login({socket, isLogged}) {
+function Login({socket}) {
 
     const inputs = {
         username: useRef(),
@@ -28,7 +27,6 @@ function Login({socket, isLogged}) {
         if (!res.error) {
             socket.emit("downloadDB");
             sessionStorage.setItem("token", res.user);
-            dispatch(updateCurrentUser(sessionStorage.getItem("username")));
             nav("/profile");
         } else {
             setError(res.message);

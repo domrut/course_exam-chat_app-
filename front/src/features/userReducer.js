@@ -5,21 +5,21 @@ export const itemsSlice = createSlice({
     name: "items",
     initialState: {
         users: [],
-        posts: [],
-        currentUser: sessionStorage.getItem("username")
+        conversations: [],
+        conversation: "",
     }, reducers: {
         updateUsers: (state, action) => {
             state.users = action.payload;
         },
-        updatePosts: (state, action) => {
-            state.posts = action.payload;
+        updateConversations: (state, action) => {
+            state.conversations = action.payload
         },
-        updateCurrentUser: (state, action) => {
-            state.currentUser = action.payload;
+        updateConversation: (state, action) => {
+            state.conversation = action.payload
         }
     }
 });
 
-export const {updateUsers, updatePosts, updateCurrentUser} = itemsSlice.actions;
+export const {updateUsers, updateConversations, updateConversation} = itemsSlice.actions;
 
 export default itemsSlice.reducer;
