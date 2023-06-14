@@ -35,3 +35,13 @@
 .toolbar div:hover:after {
     width: 100%;
 }
+
+@media screen and (max-width: 450px){
+    .toolbar {
+        flex-direction: column;
+        height: auto;
+    }
+    .toolbar div {
+        margin-bottom: 20px;
+    }
+}

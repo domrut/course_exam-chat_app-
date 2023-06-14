@@ -7,6 +7,7 @@ function ProfilePage({socket}) {
 
     const nav = useNavigate();
     const [currentUser, setCurrentUser] = useState();
+    const [error, setError] = useState("");
     const inputs = {
         image: useRef(),
         password: useRef(),
@@ -38,6 +39,8 @@ function ProfilePage({socket}) {
             password: inputs.password.current.value,
             token: sessionStorage.getItem("token")
         }
+        if ((inputs.username.current.value === "") && (inputs.image.current.value === "")
+        && (inputs.password.current.value === "")) return setError("Information not provided");
         const res = await http.post("update", user);
         if (res.error) {
             alert(res.message);
@@ -58,16 +61,17 @@ function ProfilePage({socket}) {
                         <div className="imgas">
                             <img src={currentUser.image} alt="profile picture"/>
                         </div>
-                        <h3>Username: {currentUser.username}</h3>
+                        <h3>Hello, {currentUser.username}</h3>
                     </div>
-                    <div className="d-flex f-direction p20 a-items-center">
+                    <div className="d-flex form form-inside f-direction p20 a-items-center">
                         <h2>Change your user information:</h2>
                         <input className="p20 m10" type="text" ref={inputs.username} placeholder="Enter new username"/>
                         <input className="p20 m10" type="password" ref={inputs.password}
                                placeholder="Enter new password"/>
                         <input className="p20 m10" type="text" ref={inputs.image}
                                placeholder="Add new profile picture"/>
-                        <button className="m10" onClick={updateUser}>Change information</button>
+                        <button className="m10 button-20 button-color" style={{marginTop: "20px"}} onClick={updateUser}>Change information</button>
+                        {error !== "" ? <h4 style={{textAlign: "center"}}>{error}</h4> : ""}
                     </div>
                 </div>
             }

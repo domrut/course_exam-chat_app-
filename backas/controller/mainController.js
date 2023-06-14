@@ -80,7 +80,7 @@ module.exports = {
         })
         if (flag) return res.send({error: true, message: "You already have conversation with this person"})
         users.push(req.user.username);
-        messages[0].sender = req.user.username;
+        messages.sender = req.user.username;
         const conversation = new conversationDb({
             users,
             messages
@@ -88,6 +88,24 @@ module.exports = {
 
         await conversation.save();
         return res.send({error: false, message: "Message sent", conversation: conversation})
+    },
+
+    addUser: async (req, res) => {
+        const {username, id} = req.body;
+        let conversation = await conversationDb.findOne({_id: id});
+        let flag = false;
+            if (conversation.users.filter(item => item === username).length >= 1) {
+                flag = true;
+            }
+
+        if (flag) return res.send({error: true, message: "This person is already added"})
+        await conversationDb.findOneAndUpdate(
+            {_id: id},
+            {$push: {users: username}},
+            {new: true}
+        )
+
+        return res.send({error: false, message: "User added", conversation: conversation})
     },
 
     getMessages: async (req, res) => {
@@ -126,26 +144,31 @@ module.exports = {
     },
 
     addLike: async (req, res) => {
-        const {id, username} = req.body;
-        let selectedPost = await postDb.findOne({_id: id});
-
-        console.log(selectedPost.likes, username)
-
-        if (selectedPost.likes.filter(item => item.username === username).length === 1) {
-            selectedPost = selectedPost.likes.filter(item => item.username !== username);
-            await postDb.findOneAndUpdate(
+        const {messageID, id} = req.body;
+        let selectedPost = await conversationDb.findOne({"_id": id}, {"messages": {"$elemMatch": {"id": 2}}});
+        console.log(selectedPost.messages[0].likes, messageID);
+        if (selectedPost.messages[0].likes.filter(item => item === req.user.username).length === 1) {
+            selectedPost = selectedPost.messages[0].likes.filter(item => item.username !== req.user.username);
+            await conversationDb.findOneAndUpdate(
                 {_id: id},
                 {$set: {likes: selectedPost}},
                 {new: true}
             )
         } else {
-            await postDb.findOneAndUpdate(
-                {_id: id},
-                {$push: {likes: {username}}},
+            await conversationDb.updateOne(
+                {
+                    _id: id,
+                    "messages": {"$elemMatch": {"id": 2}}
+                },
+                {
+                    $push: {
+                        likes: req.user.username,
+                    }
+                },
                 {new: true}
             )
         }
 
-        res.send({error: false, message: "Like added"})
+        return res.send({error: false, message: "Like added"})
     }
 }

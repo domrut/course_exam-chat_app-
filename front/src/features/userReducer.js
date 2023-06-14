@@ -7,6 +7,7 @@ export const itemsSlice = createSlice({
         users: [],
         conversations: [],
         conversation: "",
+        currentUser: ""
     }, reducers: {
         updateUsers: (state, action) => {
             state.users = action.payload;
@@ -16,10 +17,13 @@ export const itemsSlice = createSlice({
         },
         updateConversation: (state, action) => {
             state.conversation = action.payload
+        },
+        updateCurrentUser: (state, action) => {
+            state.currentUser = action.payload
         }
     }
 });
 
-export const {updateUsers, updateConversations, updateConversation} = itemsSlice.actions;
+export const {updateUsers, updateCurrentUser, updateConversations, updateConversation} = itemsSlice.actions;
 
 export default itemsSlice.reducer;

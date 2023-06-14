@@ -31,7 +31,6 @@
 }
 
 .button-20 {
-    appearance: button;
     background: #fff;
     border-radius: 1rem;
     border: 1px solid #000;
@@ -72,6 +71,10 @@
 
 .button-right {
     margin-left: 100px;
+    background: linear-gradient(to top right, #963b98, #ff986f);
+}
+
+.button-color {
     background: linear-gradient(to top right, #963b98, #ff986f);
 }
 
