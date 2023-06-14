@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const mainController = require("../controller/mainController")
 const registerValidator = require('../validators/registerValidator')
-const postValidator = require("../validators/postValidator")
+const addUserValidation = require("../validators/addUserValidation")
 const authValidator = require("../validators/authValidator");
 
 router.post("/login", mainController.login);
@@ -14,6 +14,7 @@ router.post("/deleteConversation", authValidator, mainController.deleteConversat
 router.post("/getMessages", authValidator, mainController.getMessages);
 router.post("/getChat", authValidator, mainController.getChat);
 router.post("/addMessage", authValidator, mainController.addMessage);
-router.post("/addLike", postValidator, mainController.addLike);
+router.post("/addLike", authValidator, mainController.addLike);
+router.post("/addUser", authValidator, addUserValidation, mainController.addUser);
 
 module.exports = router;

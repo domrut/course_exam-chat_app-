@@ -3,8 +3,8 @@ import {useNavigate} from "react-router-dom";
 import "../styles/toolbar.css"
 
 function Toolbar() {
-    const token = sessionStorage.getItem("token")
-    const nav = useNavigate()
+    const token = sessionStorage.getItem("token");
+    const nav = useNavigate();
 
     const logout = () => {
         sessionStorage.removeItem("token");

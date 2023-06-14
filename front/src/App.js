@@ -1,7 +1,7 @@
 import './styles/App.css';
 import {useDispatch} from "react-redux";
 import {Route, Routes} from "react-router-dom";
-import {updateUsers, updateConversations} from "./features/userReducer";
+import {updateUsers, updateConversations, updateConversation} from "./features/userReducer";
 import {io} from "socket.io-client";
 import {useEffect} from "react";
 import RegisterPage from "./pages/registerPage";

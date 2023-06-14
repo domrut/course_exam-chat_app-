@@ -39,6 +39,7 @@ io.on("connection", async (socket) => {
     //     id: socket.id
     // })
 
+    console.log(socket.id);
     connectedClients[socket.id] = socket;
 
     socket.on("downloadDB", async () => {
@@ -48,6 +49,13 @@ io.on("connection", async (socket) => {
         if (users && conversations) io.emit("init", {conversations, users});
     })
 
+    io.to(socket.id).emit("hello", "for your eyes only")
+
+    socket.on("downloadChat", async () => {
+        const conversations = await conversationDb.find();
+        if (conversations) io.emit("chat", {conversations});
+    })
+
     //send event from back
     // io.emit("init", async () => {
     //     const users = await userDb.find();
@@ -55,13 +63,15 @@ io.on("connection", async (socket) => {
     // })
 
     //receive event from front
-    socket.on("message", (obj) => {
+    socket.on("message", async(obj) => {
         console.log(obj)
+        const conversations = await conversationDb.find()
+        if (conversations) io.emit("color", conversations)
         //emit event to all sockets(sessions)
         // io.emit("messages", obj)
 
         //emit event to all sockets except the sender
-        // socket.broadcast.emit("color", color)
+        // socket.broadcast.emit("color", "xdd")
 
         //emit event to certain socket(session) id
     })

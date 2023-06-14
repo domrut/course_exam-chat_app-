@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import http from "../plugins/http";
+import {updateCurrentUser} from "../features/userReducer";
 
 function Login({socket}) {
 
@@ -27,6 +28,7 @@ function Login({socket}) {
         if (!res.error) {
             socket.emit("downloadDB");
             sessionStorage.setItem("token", res.user);
+            dispatch(updateCurrentUser(res.username));
             nav("/profile");
         } else {
             setError(res.message);
@@ -34,11 +36,13 @@ function Login({socket}) {
     }
 
     return (
-        <div className="d-flex f-direction dydis-sm j-center" style={{margin: "0 auto"}}>
-            <input className="m10 p20" type="text" placeholder="Username" ref={inputs.username}/>
-            <input className="m10 p20" type="text" placeholder="Password" ref={inputs.password}/>
-            <button className="m10" onClick={loginHandle}>Login</button>
-            {error !== "" ? <h4>{error}</h4> : ""}
+        <div className="background">
+            <div className="d-flex f-direction form j-center">
+                <input className="m10 p20" type="text" placeholder="Username" ref={inputs.username}/>
+                <input className="m10 p20" type="text" placeholder="Password" ref={inputs.password}/>
+                <button className="button-20 button-right" style={{marginTop: "20px"}} onClick={loginHandle}>Login</button>
+                {error !== "" ? <h4 style={{textAlign: "center"}}>{error}</h4> : ""}
+            </div>
         </div>
     );
 }

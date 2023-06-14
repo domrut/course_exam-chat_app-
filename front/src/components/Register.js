@@ -38,13 +38,15 @@ function Register({socket}) {
     }
 
     return (
-        <div className="d-flex f-direction dydis-sm j-center" style={{margin: "0 auto"}}>
-            <input className="m10 p20" type="text" placeholder="Image" ref={inputs.image}/>
-            <input className="m10 p20" type="text" placeholder="Username" ref={inputs.username}/>
-            <input className="m10 p20" type="text" placeholder="Password" ref={inputs.password}/>
-            <input className="m10 p20" type="text" placeholder="Repeat password" ref={inputs.password1}/>
-            <button className="m10" onClick={registerHandle}>Register</button>
-            {error !== "" ? <h4>{error}</h4> : ""}
+        <div className="background">
+            <div className="d-flex f-direction form dydis-md j-center">
+                <input className="m10 p20" type="text" placeholder="Image" ref={inputs.image}/>
+                <input className="m10 p20" type="text" placeholder="Username" ref={inputs.username}/>
+                <input className="m10 p20" type="text" placeholder="Password" ref={inputs.password}/>
+                <input className="m10 p20" type="text" placeholder="Repeat password" ref={inputs.password1}/>
+                <button className="m10 button-20 button-right" style={{marginTop: "20px"}} onClick={registerHandle}>Register</button>
+                {error !== "" ? <h4 style={{textAlign: "center"}}>{error}</h4> : ""}
+            </div>
         </div>
     );
 }

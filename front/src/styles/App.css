@@ -49,7 +49,7 @@ body {
 }
 
 .dydis-md {
-  width: 750px;
+  max-width: 750px;
   height: 650px;
 }
 
@@ -172,8 +172,81 @@ button {
   color: black;
 }
 
+.timestamp {
+  font-size: 11px;
+}
+
+.message {
+  background-color: lightskyblue;
+  border: none;
+  color: black;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 16px;
+  width: max-content;
+}
+
+.background {
+  height: 100vh;
+  padding-top: 200px;
+  background: linear-gradient(to top left, #963b98, #ff986f);
+}
+
+.form-inside {
+  background: linear-gradient(to top left, #963b98, #ff986f);
+}
+
+.form {
+  border: 1px solid black;
+  border-radius: 20px;
+  margin: 0 auto;
+  padding: 20px;
+  width: 550px;
+  height: 450px;
+}
+
+.form input {
+  padding: 20px;
+  background: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid black;
+  color: #FFFFFF;
+}
+
+::placeholder {
+  color: #FFFFFF;
+  opacity: 0.5;
+}
+
 .d-inline {
   display: inline-block;
+}
+
+.chat {
+  border-radius: 20px;
+  transition: 0.2s ease-in-out;
+}
+
+.chatPage {
+  border-radius: 20px;
+  background: white;
+}
+
+.chatPage input {
+  outline: none;
+  border: none;
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+.chatPage input::placeholder {
+  color: black;
+  opacity: 1;
+}
+
+.chat:hover {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 
 .a-self-center {
@@ -185,5 +258,19 @@ button {
 }
 
 @media screen and (max-width: 700px){
+  .length {
+    overflow-y: hidden;
+    overflow-x: scroll;
+    width: 100%;
+    height: 200px;
+    flex-direction: row;
+  }
 
+  .responsive {
+    flex-direction: column;
+  }
+
+  .form {
+    width: 300px;
+  }
 }
