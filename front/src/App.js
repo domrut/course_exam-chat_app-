@@ -13,7 +13,7 @@ import Toolbar from "../src/components/Toolbar";
 import ConversationPage from "./pages/ConversationPage";
 import ChatPage from "./pages/chatPage";
 
-const socket = io("http://192.168.0.108:4000");
+const socket = io("http://192.168.0.105:4000");
 
 function App() {
 
